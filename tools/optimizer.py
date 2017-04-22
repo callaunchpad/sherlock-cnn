@@ -72,7 +72,7 @@ class Optimizer(object):
 		self.logger.info("Setting up data iterators")
 		self.train_iter = mx.io.ImageRecordIter(
 	    # Dataset Parameter, indicating the data file, please check the data is already there
-			path_imgrec=os.path.join(self.dataset_dir, 'train.rec'),
+			path_imgrec=os.path.join(self.dataset_dir, 'fooddata_train.rec'),
 	    # Dataset Parameter, indicating the image size after preprocessing
 			data_shape=(self.im_channels, self.im_width, self.im_height),
 	    # Batch Parameter, tells how many images in a batch
@@ -86,7 +86,7 @@ class Optimizer(object):
 
 		self.val_iter = mx.io.ImageRecordIter(
 	    # Dataset Parameter, indicating the data file, please check the data is already there
-			path_imgrec=os.path.join(self.dataset_dir, 'val.rec'),
+			path_imgrec=os.path.join(self.dataset_dir, 'fooddata_val.rec'),
 	    # Dataset Parameter, indicating the image size after preprocessing
 			data_shape=(self.im_channels, self.im_width, self.im_height),
 	    # Batch Parameter, tells how many images in a batch
