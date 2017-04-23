@@ -37,7 +37,7 @@ class Optimizer(object):
 		self.learning_rate = cfg['learning_rate']
 		self.optimizer = cfg['optimizer']
 		self.train_log_frequency = cfg['train_log_frequency']
-		self.eval_metric = self.eval_metric['eval_metric']
+		self.eval_metric = cfg['eval_metric']
 
 		self.architecture = cfg['architecture']
 
@@ -72,7 +72,7 @@ class Optimizer(object):
 		self.logger.info("Setting up data iterators")
 		self.train_iter = mx.io.ImageRecordIter(
 	    # Dataset Parameter, indicating the data file, please check the data is already there
-			path_imgrec=os.path.join(self.dataset_dir, 'train.rec'),
+			path_imgrec=os.path.join(self.dataset_dir, 'data_train.rec'),
 	    # Dataset Parameter, indicating the image size after preprocessing
 			data_shape=(self.im_channels, self.im_width, self.im_height),
 	    # Batch Parameter, tells how many images in a batch
@@ -86,7 +86,7 @@ class Optimizer(object):
 
 		self.val_iter = mx.io.ImageRecordIter(
 	    # Dataset Parameter, indicating the data file, please check the data is already there
-			path_imgrec=os.path.join(self.dataset_dir, 'val.rec'),
+			path_imgrec=os.path.join(self.dataset_dir, 'data_val.rec'),
 	    # Dataset Parameter, indicating the image size after preprocessing
 			data_shape=(self.im_channels, self.im_width, self.im_height),
 	    # Batch Parameter, tells how many images in a batch
@@ -104,7 +104,7 @@ class Optimizer(object):
 	def build_network(self, input_im_node):
 		self.logger.info("Building network")
 		# conv1
-		conv1 = buildConvolution(input_node=input_im_node, 
+		conv1 = self.buildConvolution(input_node=input_im_node, 
 			num_filter=self.conv1_num_filter, 
 			conv_kernel=self.build_square_filter(self.conv1_filter_size), 
 			pool_kernel=self.build_square_filter(self.conv1_pool_filter_size), 
@@ -114,7 +114,7 @@ class Optimizer(object):
 			name='1')
 
 		# conv2 
-		conv2 = buildConvolution(input_node=conv1, 
+		conv2 = self.buildConvolution(input_node=conv1, 
 			num_filter=self.conv2_num_filter, 
 			conv_kernel=self.build_square_filter(self.conv2_filter_size), 
 			pool_kernel=self.build_square_filter(self.conv2_pool_filter_size), 
@@ -134,7 +134,7 @@ class Optimizer(object):
 		# softmax loss
 		self.symbol = mx.sym.SoftmaxOutput(data=fc2, name='softmax')
 
-	def buildConvolution(input_node, num_filter, conv_kernel, pool_kernel, conv_stride=(1,1), 
+	def buildConvolution(self, input_node, num_filter, conv_kernel, pool_kernel, conv_stride=(1,1), 
 		pad=(0, 0), apply_norm=False, act_type='relu', pool_type='max', 
 		pool_stride=(1,1), name=None, suffix=''):
 		self.logger.info("Building Convolution: " + name)
@@ -195,8 +195,9 @@ class Optimizer(object):
 		self.logger.info("Beginning setup for optimization")
 		with open(self.config_filename) as data_file:
 			self.config_file = json.load(data_file)
-		self.setup(self.config_file)  
-		self.build_network()
+		self.setup(self.config_file)
+		input_im_node = mx.symbol.Variable("input_im_node")  
+		self.build_network(input_im_node)
 		self.optimize()
 		self.save_and_exit()
 

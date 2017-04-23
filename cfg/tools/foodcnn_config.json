@@ -1,5 +1,5 @@
 {
-	"dataset_dir":"data/food-101/",
+	"dataset_dir":"data/",
 	"model_dir":"data/models/",
 
 	"im_width":512,
