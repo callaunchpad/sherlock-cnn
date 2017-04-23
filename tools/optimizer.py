@@ -21,25 +21,25 @@ class Optimizer(object):
 		from input dictionary '''
 		self.logger.info("Reading data params")
 
-		self.dataset_dir = self.cfg['dataset_dir']
-		self.model_dir = self.cfg['model_dir']
-		self.im_width = self.cfg['im_width']
-		self.im_height = self.cfg['im_height']
-		self.im_channels = self.cfg['im_channels']
+		self.dataset_dir = cfg['dataset_dir']
+		self.model_dir = cfg['model_dir']
+		self.im_width = cfg['im_width']
+		self.im_height = cfg['im_height']
+		self.im_channels = cfg['im_channels']
 
-		self.train_batch_size = self.cfg['train_batch_size']
-		self.val_batch_size = self.cfg['val_batch_size']
+		self.train_batch_size = cfg['train_batch_size']
+		self.val_batch_size = cfg['val_batch_size']
 
-		self.num_gpus = self.cfg['num_gpus']
-		self.num_preprocess_threads = self.cfg['num_preprocess_threads']
+		self.num_gpus = cfg['num_gpus']
+		self.num_preprocess_threads = cfg['num_preprocess_threads']
 
-		self.num_epoch = self.cfg['num_epoch']
-		self.learning_rate = self.cfg['learning_rate']
-		self.optimizer = self.cfg['optimizer']
-		self.train_log_frequency = self.cfg['train_log_frequency']
+		self.num_epoch = cfg['num_epoch']
+		self.learning_rate = cfg['learning_rate']
+		self.optimizer = cfg['optimizer']
+		self.train_log_frequency = cfg['train_log_frequency']
 		self.eval_metric = self.eval_metric['eval_metric']
 
-		self.architecture = self.cfg['architecture']
+		self.architecture = cfg['architecture']
 
 		self.conv1_num_filter = self.architecture['conv1']['num_filter']
 		self.conv1_filter_size = self.architecture['conv1']['filter_size']
